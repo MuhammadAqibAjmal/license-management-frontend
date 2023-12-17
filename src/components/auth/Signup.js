@@ -26,7 +26,13 @@ const Signup = () => {
         console.log('Registration successful');
         navigate('/');
       } else {
-        console.error('Registration failed');
+        const responseData = await response.json();
+        const errorMessage = responseData.error || 'Registration failed';
+  
+        console.error(errorMessage);
+  
+        // Display the error message
+        alert(errorMessage);
         // Handle error, show error message, etc.
       }
     } catch (error) {

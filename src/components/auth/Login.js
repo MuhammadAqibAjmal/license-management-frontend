@@ -30,11 +30,19 @@ const Login = () => {
           navigate('/user-dashboard');
         }
       } else {
-        console.error('Login failed');
+        const responseData = await response.json();
+        const errorMessage = responseData.error || 'Login failed';
+  
+        console.error(errorMessage);
+  
+        // Display the error message
+        alert(errorMessage);
+       
         // Handle error, show error message, etc.
       }
     } catch (error) {
       console.error('An error occurred during login', error);
+      alert(error)
       // Handle error, show error message, etc.
     }
   };
