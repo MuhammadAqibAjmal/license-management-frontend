@@ -1,23 +1,23 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './auth/AuthContext';
+import Login from './components/auth/Login';
 
-import Login from './components/Login';
-import SignUp from './components/SignUp';
+import AdminDashboard from './components/dashboard/AdminDashboard';
+import Signup from './components/auth/Signup';
+import UserDashboard from './components/dashboard/UserDashboard';
 
-function App() {
+const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-        <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={SignUp} />
-      
-          </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/user-dashboard" element={<UserDashboard />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
