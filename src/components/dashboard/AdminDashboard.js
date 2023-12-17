@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DashboardLayout from './DashboardLayout';
-
+import emailjs from "@emailjs/browser";
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
@@ -84,11 +84,39 @@ const AdminDashboard = () => {
 
       // If the request is successful, update the licenses state
       setLicenses([...licenses, response.data.license]);
+
+      // Send an email to the user with the license details
+      sendEmail(response.data.license);
+
     } catch (error) {
       console.error('Error generating license:', error.message);
     }
   };
-
+  const sendEmail = (license) => {
+    emailjs
+      .send(
+        'service_thxtuif', // Replace with your service ID
+        'template_0dfb85s', // Replace with your template ID
+        {
+          to_email: users.find(u => u._id === license.user)?.email,
+          license_key: license.key,
+          product_name: products.find(p => p._id === license.product)?.name,
+          user_name: users.find(u => u._id === license.user)?.username,
+          to_name: users.find(u => u._id === license.user)?.username,
+          
+          
+        },
+        'U8CaJyibOwChYKggY' // Replace with your user ID
+      )
+      .then(
+        (response) => {
+          console.log('Email sent successfully:', response);
+        },
+        (error) => {
+          console.error('Error sending email:', error);
+        }
+      );
+  };
   const generateRandomKey = () => {
     // This is a simplified key generation, replace it with a more secure method
     return Math.random().toString(36).substr(2, 8).toUpperCase();

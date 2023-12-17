@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setUserId }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('user'); // Default role is user
@@ -23,6 +23,10 @@ const Login = () => {
       });
 
       if (response.ok) {
+        const userData = await response.json();
+        // Set userId in the parent component or global state
+        localStorage.setItem('userId', userData.user._id);
+
         // Redirect based on the selected role
         if (role === 'admin') {
           navigate('/admin-dashboard');
@@ -32,21 +36,17 @@ const Login = () => {
       } else {
         const responseData = await response.json();
         const errorMessage = responseData.error || 'Login failed';
-  
+
         console.error(errorMessage);
-  
+
         // Display the error message
         alert(errorMessage);
-       
-        // Handle error, show error message, etc.
       }
     } catch (error) {
       console.error('An error occurred during login', error);
-      alert(error)
-      // Handle error, show error message, etc.
+      alert(error);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300">
       <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md flex flex-col items-center">
@@ -111,7 +111,7 @@ const Login = () => {
             <button
               type="button"
               onClick={handleLogin}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Sign in
             </button>
