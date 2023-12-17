@@ -1,4 +1,3 @@
-// src/components/auth/Login.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -8,18 +7,36 @@ const Login = () => {
   const [role, setRole] = useState('user'); // Default role is user
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Implement your authentication logic here
-    // For simplicity, we'll just check if both username and password are not empty
-    if (username && password) {
-      // Redirect based on the selected role
-      if (role === 'admin') {
-        navigate('/admin-dashboard');
+  const handleLogin = async () => {
+    try {
+      // Make a POST request to the login endpoint on your backend
+      const response = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          role,
+        }),
+      });
+
+      if (response.ok) {
+        // Redirect based on the selected role
+        if (role === 'admin') {
+          navigate('/admin-dashboard');
+        } else {
+          navigate('/user-dashboard');
+        }
       } else {
-        navigate('/user-dashboard');
+        console.error('Login failed');
+        // Handle error, show error message, etc.
       }
+    } catch (error) {
+      console.error('An error occurred during login', error);
+      // Handle error, show error message, etc.
     }
-    // You should add actual authentication logic with API calls to your backend here
   };
 
   return (

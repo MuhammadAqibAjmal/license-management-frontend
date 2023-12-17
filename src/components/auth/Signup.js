@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  const [fullName, setFullName] = useState('');
+  const [username, setusername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -10,13 +10,13 @@ const Signup = () => {
   const handleSignup = async () => {
     try {
       // Make a POST request to the signup endpoint on your backend
-      const response = await fetch('http://localhost:3000/api/signup', {
+      const response = await fetch('http://localhost:5000/api/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fullName,
+          username,
           email,
           password,
         }),
@@ -45,17 +45,17 @@ const Signup = () => {
           <div className="rounded-md shadow-sm -space-y-px">
             {/* Full Name */}
             <div>
-              <label htmlFor="fullname" className="sr-only">
+              <label htmlFor="username" className="sr-only">
                 Full Name
               </label>
               <input
-                id="fullname"
-                name="fullname"
+                id="username"
+                name="username"
                 type="text"
                 autoComplete="name"
                 required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                value={username}
+                onChange={(e) => setusername(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Full Name"
               />
